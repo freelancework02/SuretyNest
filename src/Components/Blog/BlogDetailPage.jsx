@@ -5,23 +5,23 @@ import Navbar from "../Navbar/Navbar";
 import Footer from "../Contactus/Contactus";
 
 /**
- * Blog Detail — Variant A (Updated colors & layout)
+ * Blog Detail — SuretyNest Variant A
  *
- * - Theme: blue gradient accents + deep navy text to match site logo palette.
- * - Larger immersive hero with blue overlay, clearer floating info card,
- *   improved typography and CTA treatments.
- * - Keeps existing routing/props expectations (location.state.blog).
- *
- * Color tokens:
- *   BLUE_START = #1572ff
- *   BLUE_END   = #0ea5e9
- *   DEEP_NAVY  = #082a48
+ * Brand palette:
+ *   BRAND_NAVY  = #022548
+ *   BRAND_TEAL  = #0B6970
+ *   GOLD_START  = #E5C569
+ *   GOLD_END    = #AF8F3C
  */
 
-const BLUE_START = "#f7d88b";
-const BLUE_END = "#c9943b";
-const DEEP_NAVY = "#082a48";
+const BRAND_NAVY = "#022548";
+const BRAND_TEAL = "#0B6970";
+const GOLD_START = "#E5C569";
+const GOLD_END = "#AF8F3C";
 const SURFACE = "#ffffff";
+
+const GOLD_GRADIENT = `linear-gradient(135deg, ${GOLD_START}, ${GOLD_END})`;
+const NAVY_GRADIENT = `linear-gradient(135deg, ${BRAND_NAVY}, ${BRAND_TEAL})`;
 
 export default function BlogDetailVariantA() {
   const location = useLocation();
@@ -34,16 +34,19 @@ export default function BlogDetailVariantA() {
         <Navbar />
         <div className="h-20 md:h-24 lg:h-28" />
         <div className="flex-1 flex flex-col items-center justify-center text-center p-6">
-          <h2 className="text-2xl font-semibold mb-4" style={{ color: DEEP_NAVY }}>
+          <h2
+            className="text-2xl font-semibold mb-4"
+            style={{ color: BRAND_NAVY }}
+          >
             Blog not found
           </h2>
           <button
             onClick={() => navigate(-1)}
             className="mt-4 px-6 py-2 rounded-full font-semibold"
             style={{
-              background: `linear-gradient(90deg, ${BLUE_START}, ${BLUE_END})`,
+              background: NAVY_GRADIENT,
               color: SURFACE,
-              boxShadow: "0 8px 28px rgba(21,114,255,0.14)",
+              boxShadow: "0 8px 28px rgba(2,37,72,0.32)",
             }}
           >
             Go Back
@@ -60,15 +63,33 @@ export default function BlogDetailVariantA() {
         .map((line, index, arr) => {
           const isBullet = line.trim().match(/^[-*•]\s/);
           const isNumbered = line.trim().match(/^\d+\.\s/);
-          if ((isBullet || isNumbered) && index > 0 && arr[index - 1].trim() !== "")
+          if (
+            (isBullet || isNumbered) &&
+            index > 0 &&
+            arr[index - 1].trim() !== ""
+          )
             return `\n${line}`;
           return line;
         })
         .join("\n")
     : "";
 
+  const publishedDate = new Date(
+    blog.publishedAt || blog.date || Date.now()
+  ).toLocaleDateString(undefined, {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
+
   return (
-    <div className="min-h-screen flex flex-col bg-white">
+    <div
+      className="min-h-screen flex flex-col"
+      style={{
+        background:
+          "radial-gradient(circle at top, #faf5e8 0, #f3f6fb 40%, #f5f7fa 100%)",
+      }}
+    >
       <Navbar />
       {/* spacer to avoid navbar overlap */}
       <div className="h-20 md:h-24 lg:h-28" />
@@ -83,7 +104,7 @@ export default function BlogDetailVariantA() {
             position: "relative",
           }}
         >
-          {/* hero image (keeps original) */}
+          {/* hero image */}
           <img
             src={blog.image}
             alt={blog.title}
@@ -92,13 +113,13 @@ export default function BlogDetailVariantA() {
             loading="lazy"
           />
 
-          {/* blue vignette overlay */}
+          {/* SuretyNest overlay */}
           <div
             aria-hidden
             className="absolute inset-0"
             style={{
               background:
-                "linear-gradient(180deg, rgba(2,20,45,0.25) 0%, rgba(2,20,45,0.12) 30%, rgba(0,0,0,0.0) 70%), radial-gradient(800px 300px at 10% 10%, rgba(21,114,255,0.10), transparent 30%)",
+                "linear-gradient(135deg, rgba(2,37,72,0.85) 0%, rgba(11,105,112,0.7) 45%, rgba(0,0,0,0.3) 100%), radial-gradient(700px 260px at 10% 15%, rgba(229,197,105,0.25), transparent 55%)",
             }}
           />
         </div>
@@ -106,40 +127,46 @@ export default function BlogDetailVariantA() {
         {/* Floating info card */}
         <div className="max-w-6xl mx-auto px-4 md:px-6 lg:px-8 -mt-20 md:-mt-24 relative z-20">
           <div
-            className="bg-white rounded-2xl p-6 md:p-8 shadow-lg border flex flex-col md:flex-row items-start gap-6"
+            className="bg-white/95 backdrop-blur rounded-2xl p-6 md:p-8 shadow-[0_20px_45px_rgba(2,37,72,0.35)] border flex flex-col md:flex-row items-start gap-6"
             style={{
-              borderColor: "rgba(2,20,45,0.06)",
+              borderColor: "rgba(2,37,72,0.10)",
             }}
           >
             <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-3 mb-3">
+              <div className="flex items-center gap-3 mb-3 flex-wrap">
                 <span
-                  className="inline-block px-3 py-1 rounded-full text-xs font-semibold"
+                  className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] font-semibold tracking-[0.16em]"
                   style={{
-                    background: `linear-gradient(90deg, ${BLUE_START}, ${BLUE_END})`,
-                    color: SURFACE,
-                    boxShadow: "0 8px 20px rgba(21,114,255,0.12)",
+                    background: GOLD_GRADIENT,
+                    color: BRAND_NAVY,
+                    boxShadow: "0 8px 20px rgba(175,143,60,0.45)",
                   }}
                 >
-                  {new Date(blog.publishedAt || Date.now()).toLocaleDateString()}
+                  <span>{publishedDate}</span>
                 </span>
 
-                <div className="text-xs text-[rgba(8,42,72,0.7)]">
-                  {blog.author || "Team"}
+                <div
+                  className="text-xs md:text-sm"
+                  style={{ color: "rgba(2,37,72,0.75)" }}
+                >
+                  {blog.author || "SuretyNest Team"}
                 </div>
               </div>
 
               <h1
-                className="text-lg md:text-2xl lg:text-3xl font-extrabold text-ellipsis"
-                style={{ color: DEEP_NAVY }}
+                className="text-lg md:text-2xl lg:text-3xl font-extrabold leading-snug"
+                style={{ color: BRAND_NAVY }}
                 title={blog.title}
               >
                 {blog.title}
               </h1>
 
-              <p className="mt-3 text-sm md:text-base text-[rgba(2,20,45,0.75)] max-w-3xl">
+              <p
+                className="mt-3 text-sm md:text-base max-w-3xl"
+                style={{ color: "rgba(2,37,72,0.80)" }}
+              >
                 {blog.summary ||
-                  "An in-depth article curated by our experts to help you understand financial insights and smart strategies."}
+                  "An in-depth article curated by our experts to help you navigate financial decisions with clarity and confidence."}
               </p>
             </div>
 
@@ -148,9 +175,9 @@ export default function BlogDetailVariantA() {
                 onClick={() => navigate("/blog")}
                 className="rounded-full px-4 py-2 text-sm font-semibold"
                 style={{
-                  background: `linear-gradient(90deg, ${BLUE_START}, ${BLUE_END})`,
+                  background: NAVY_GRADIENT,
                   color: SURFACE,
-                  boxShadow: "0 10px 30px rgba(21,114,255,0.12)",
+                  boxShadow: "0 10px 30px rgba(2,37,72,0.45)",
                 }}
               >
                 Back to Blogs
@@ -158,17 +185,22 @@ export default function BlogDetailVariantA() {
 
               <button
                 onClick={() =>
-                  window.open(blog.meetingLink || "#", "_blank", "noopener,noreferrer")
+                  window.open(
+                    blog.meetingLink || "#",
+                    "_blank",
+                    "noopener,noreferrer"
+                  )
                 }
                 className="rounded-full px-4 py-2 text-sm font-medium border"
                 style={{
-                  borderColor: "rgba(2,20,45,0.06)",
-                  color: DEEP_NAVY,
-                  background: "white",
+                  borderColor: "rgba(2,37,72,0.12)",
+                  color: BRAND_NAVY,
+                  background: SURFACE,
+                  opacity: blog.meetingLink ? 1 : 0.6,
                 }}
                 aria-disabled={!blog.meetingLink}
               >
-                {blog.meetingLink ? "Join Meeting" : "No meeting link"}
+                {blog.meetingLink ? "Book a Call" : "No meeting link"}
               </button>
             </div>
           </div>
@@ -177,10 +209,10 @@ export default function BlogDetailVariantA() {
 
       {/* MAIN CONTENT */}
       <main className="flex-1 max-w-6xl mx-auto px-4 md:px-6 lg:px-8 py-12 md:py-16">
-        <article className="prose prose-lg max-w-none text-[rgba(2,20,45,0.85)]">
+        <article className="max-w-none text-[rgba(2,37,72,0.9)]">
           <div className="flex flex-col lg:flex-row gap-10 items-start">
-            {/* Left column image (keeps image but smaller) */}
-            <div className="lg:w-1/3 w-full rounded-2xl overflow-hidden shadow-[0_8px_30px_rgba(2,20,45,0.06)]">
+            {/* Left column image */}
+            <div className="lg:w-1/3 w-full rounded-2xl overflow-hidden shadow-[0_12px_34px_rgba(2,37,72,0.16)] bg-white border border-[rgba(2,37,72,0.06)]">
               <img
                 src={blog.image}
                 alt={blog.title}
@@ -191,65 +223,92 @@ export default function BlogDetailVariantA() {
             </div>
 
             {/* Right column text */}
-            <div className="lg:w-2/3 w-full space-y-5">
+            <div className="lg:w-2/3 w-full space-y-5 text-sm md:text-base">
               {formattedContent.split("\n").map((line, idx) => {
                 const trimmed = line.trim();
                 if (!trimmed) return null;
-                const isList = trimmed.match(/^[-*•]\s/) || trimmed.match(/^\d+\.\s/);
+                const isList =
+                  trimmed.match(/^[-*•]\s/) || trimmed.match(/^\d+\.\s/);
+
                 if (isList) {
-                  // render as <li> for bullets / numbered -- simple detection
                   return (
                     <p
                       key={idx}
                       className="pl-5"
                       style={{ marginTop: 0, lineHeight: "1.8" }}
-                      dangerouslySetInnerHTML={{ __html: trimmed.replace(/^[-*•]\s/, "• ") }}
+                      dangerouslySetInnerHTML={{
+                        __html: trimmed.replace(/^[-*•]\s/, "• "),
+                      }}
                     />
                   );
                 }
+
                 return (
-                  <p key={idx} style={{ lineHeight: "1.8", marginTop: "0.6rem" }}>
+                  <p
+                    key={idx}
+                    style={{ lineHeight: "1.8", marginTop: "0.6rem" }}
+                  >
                     {line}
                   </p>
                 );
               })}
 
               {/* Inline CTA strip */}
-              <div className="mt-6 rounded-lg p-6 bg-gradient-to-r from-white to-white border" style={{ borderColor: "rgba(2,20,45,0.06)" }}>
+              <div
+                className="mt-6 rounded-2xl p-6 border bg-white/90 backdrop-blur"
+                style={{ borderColor: "rgba(2,37,72,0.10)" }}
+              >
                 <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-                  <div>
-                    <h3 className="text-lg font-bold" style={{ color: DEEP_NAVY }}>
+                  <div className="text-center md:text-left">
+                    <h3
+                      className="text-lg font-bold mb-1"
+                      style={{ color: BRAND_NAVY }}
+                    >
                       Want a tailored walkthrough?
                     </h3>
-                    <p className="text-sm text-[rgba(2,20,45,0.7)]">
-                      Book a short call and we'll walk through specific steps for your situation.
+                    <p
+                      className="text-sm"
+                      style={{ color: "rgba(2,37,72,0.75)" }}
+                    >
+                      Book a short session and we&apos;ll walk through specific
+                      steps for your situation.
                     </p>
                   </div>
 
-                  <div className="flex gap-3">
+                  <div className="flex gap-3 flex-wrap justify-center md:justify-end">
                     <button
                       onClick={() =>
-                        window.open(blog.meetingLink || "https://calendly.com/vmfinsolutions/financialneedanalysis", "_blank", "noopener,noreferrer")
+                        window.open(
+                          blog.meetingLink ||
+                            "https://calendly.com/vmfinsolutions/financialneedanalysis",
+                          "_blank",
+                          "noopener,noreferrer"
+                        )
                       }
-                      className="inline-flex items-center gap-2 px-5 py-3 rounded-full font-semibold"
+                      className="inline-flex items-center gap-2 px-5 py-3 rounded-full font-semibold text-sm"
                       style={{
-                        background: `linear-gradient(90deg, ${BLUE_START}, ${BLUE_END})`,
-                        color: SURFACE,
-                        boxShadow: "0 12px 36px rgba(21,114,255,0.12)",
+                        background: GOLD_GRADIENT,
+                        color: BRAND_NAVY,
+                        boxShadow: "0 12px 36px rgba(175,143,60,0.45)",
                       }}
                     >
                       Book a Call
                     </button>
 
                     <button
-                       onClick={() =>
-                        window.open(blog.meetingLink || "https://calendly.com/vmfinsolutions/financialneedanalysis", "_blank", "noopener,noreferrer")
+                      onClick={() =>
+                        window.open(
+                          blog.meetingLink ||
+                            "https://calendly.com/vmfinsolutions/financialneedanalysis",
+                          "_blank",
+                          "noopener,noreferrer"
+                        )
                       }
-                      className="inline-flex items-center gap-2 px-4 py-3 rounded-full border font-medium"
+                      className="inline-flex items-center gap-2 px-4 py-3 rounded-full border font-medium text-sm"
                       style={{
-                        borderColor: "rgba(2,20,45,0.06)",
-                        color: DEEP_NAVY,
-                        background: "white",
+                        borderColor: "rgba(2,37,72,0.12)",
+                        color: BRAND_NAVY,
+                        background: SURFACE,
                       }}
                     >
                       Contact Us
@@ -264,14 +323,14 @@ export default function BlogDetailVariantA() {
           <div className="mt-12 text-center">
             <button
               onClick={() => navigate("/blog")}
-              className="rounded-full px-6 py-3 font-semibold"
+              className="rounded-full px-6 py-3 font-semibold text-sm md:text-base"
               style={{
-                background: `linear-gradient(90deg, ${BLUE_START}, ${BLUE_END})`,
-                color: SURFACE,
-                boxShadow: "0 10px 30px rgba(21,114,255,0.10)",
+                background: GOLD_GRADIENT,
+                color: BRAND_NAVY,
+                boxShadow: "0 10px 30px rgba(175,143,60,0.45)",
               }}
             >
-              Browse all Blogs
+              Browse all blogs
             </button>
           </div>
         </article>
