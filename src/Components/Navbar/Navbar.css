@@ -1,11 +1,12 @@
-@media (max-width:650px){
+/* Fix logo on small screens */
+@media (max-width: 650px) {
+  #logo {
+    width: auto;
+    height: 100px;     /* clean readable size */
+    object-fit: contain;
+  }
 
-    #logo{
-        width: 100%;
-        height: 65%;
-    }
-
-    .logosection{
-        height: 65px;
-    }
+  .logosection {
+    height: auto;
+  }
 }

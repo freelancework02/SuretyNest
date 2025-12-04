@@ -10,8 +10,8 @@ const TEXT = "#0f3144";
 
 export default function AboutUsFounder({
   founderImage,
-  founderName = "Vaibhav Maddiwar",
-  initials = "VM",
+  founderName = "Bhaskar",
+  initials = "B",
 }) {
   const openCalendly = (e) => {
     e.preventDefault();
@@ -37,7 +37,7 @@ export default function AboutUsFounder({
           "radial-gradient(circle at top, #ffffff 0%, #f5f6f9 40%, #ffffff 100%)",
       }}
     >
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-7xl mx-auto mt-10">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-10">
           <div className="text-center md:text-left">
@@ -105,20 +105,13 @@ export default function AboutUsFounder({
 
               <div className="mt-4 text-sm md:text-base text-black/80 space-y-4 leading-relaxed">
                 <p>
-                  Personal finances are something that every individual should
-                  know and understand. But there is very little formal education
-                  on the topic and many of us copy what everyone else is doing.
-                  That may not always be in your best interest. What works for
-                  someone else may not work for you because every family has
-                  different goals, time horizons, and challenges.
+                 At SuretyNest, our mission is to empower individuals and families to build a secure financial future with confidence and clarity.
+We move beyond transactions to establish genuine partnerships, crafting customized strategies for growth while ensuring your loved ones have security for life through robust insurance and thoughtful retirement planning.
+We are also actively seeking to expand our reach and impact. 
+We invite driven financial professionals and business partners who share our commitment to trust, growth, and client-centric solutions to join the SuretyNest network and help us redefine financial security for more people. We are dedicated to delivering trustworthy guidance and peace of mind at every stage of the financial journey.
                 </p>
 
-                <p>
-                  SuretyNest Financial Solutions was conceived to take an
-                  education-first approach to personal finances: first teach the
-                  basics, then help you take action to meet your financial
-                  goals—with clarity instead of confusion.
-                </p>
+            
               </div>
 
               {/* quick facts */}
@@ -263,7 +256,7 @@ export default function AboutUsFounder({
                       className="text-xs md:text-sm mt-1"
                       style={{ color: "rgba(15,49,68,0.8)" }}
                     >
-                      (License Number – 21017650)
+                      (License Number – 21531144)
                     </div>
                     <p
                       className="mt-2 text-xs md:text-sm"

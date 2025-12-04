@@ -75,7 +75,7 @@ export default function BlogVariantBUpdated() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* header */}
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-10 gap-6">
+        <div className="mt-20 flex flex-col md:flex-row md:items-center md:justify-between mb-10 gap-6">
           <div>
             <div
               className="inline-flex items-center px-3 py-1 rounded-full text-[11px] font-semibold tracking-[0.2em] mb-3"

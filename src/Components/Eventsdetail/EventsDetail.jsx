@@ -144,7 +144,7 @@ export default function EventsDetailModern({ event = null, previousEvents = null
 
   return (
     <section
-      className="w-full pb-12"
+      className="w-full pb-12 mt-32"
       style={{
         background:
           "radial-gradient(circle at top, #faf5e8 0, #f3f6fb 40%, #f5f7fa 100%)",

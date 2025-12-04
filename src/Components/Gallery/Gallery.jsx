@@ -146,7 +146,7 @@ export default function EventsGalleryAttractive() {
 
   return (
     <section
-      className="mt-20 max-w-7xl mx-auto px-4 py-16 rounded-3xl"
+      className="mt-20  max-w-7xl mx-auto px-4 py-16 rounded-3xl"
       style={{
         background:
           "radial-gradient(circle at top, #fdf9f0 0, #f3f6fb 40%, #f5f7fa 100%)",
@@ -154,7 +154,7 @@ export default function EventsGalleryAttractive() {
       }}
     >
       {/* Top Heading */}
-      <div className="flex justify-between mb-10 flex-wrap gap-6 items-end">
+      <div className="mt-10 flex justify-between mb-10 flex-wrap gap-6 items-end">
         <div>
           <div
             className="inline-flex items-center px-3 py-1 rounded-full text-xs tracking-[0.18em] font-semibold mb-3"

@@ -1,7 +1,7 @@
 // HeroModern.jsx
 import React from "react";
 import { motion } from "framer-motion";
-import heroImg from "../../assets/Herosec.png";
+import heroImg from "../../assets/Logo/Hero.png";
 
 const GOLD_LIGHT = "#f7d88b";
 const GOLD_DARK = "#c9943b";

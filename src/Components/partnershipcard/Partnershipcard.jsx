@@ -98,7 +98,7 @@ export default function PartnerProgramSuretyNest() {
 
   return (
     <section
-      className="mt-16 relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16"
+      className="mt-28 relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16"
       aria-labelledby="partner-heading"
       style={{
         background:

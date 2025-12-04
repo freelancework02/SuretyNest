@@ -77,7 +77,7 @@ export default function ServicecardVariantAUpdated() {
           "radial-gradient(circle at top, #ffffff 0%, #f5f6f9 40%, #ffffff 100%)",
       }}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mt-10 mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-12">
           <div className="text-center lg:text-left">

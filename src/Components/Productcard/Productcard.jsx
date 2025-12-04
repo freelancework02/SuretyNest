@@ -94,16 +94,16 @@ export default function ProductcardGoldVariantModern() {
   const cardRefs = useRef([]);
 
   // scroll active card into view whenever active changes
-  useEffect(() => {
-    const el = cardRefs.current[active];
-    if (el && typeof el.scrollIntoView === "function") {
-      el.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-        inline: "nearest",
-      });
-    }
-  }, [active]);
+  // useEffect(() => {
+  //   const el = cardRefs.current[active];
+  //   if (el && typeof el.scrollIntoView === "function") {
+  //     el.scrollIntoView({
+  //       behavior: "smooth",
+  //       block: "center",
+  //       inline: "nearest",
+  //     });
+  //   }
+  // }, [active]);
 
   // fallback handler for images
   const handleImgError = (e) => {
@@ -133,6 +133,7 @@ export default function ProductcardGoldVariantModern() {
   return (
     <section
       aria-labelledby="products-modern"
+    
       style={{
         marginTop: 64,
         paddingTop: 64,
@@ -142,6 +143,7 @@ export default function ProductcardGoldVariantModern() {
       }}
     >
       <div
+      
         style={{
           maxWidth: 1120,
           margin: "0 auto",
@@ -151,6 +153,7 @@ export default function ProductcardGoldVariantModern() {
       >
         {/* Header row */}
         <div
+          className="mt-16"
           style={{
             display: "flex",
             flexDirection: "column",
