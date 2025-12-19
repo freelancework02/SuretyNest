@@ -32,8 +32,8 @@ const NAVY_GRADIENT = `linear-gradient(135deg, ${BRAND_NAVY}, ${BRAND_TEAL})`;
 const DEMO_EVENT = {
   title: "Design Systems & DX — Practical Deep Dive",
   date: "2025-11-24T18:30:00+05:30",
-  host: "vm financial solutions · Vaibhav Maddiwar",
-  description: `<p>Join Vaibhav Maddiwar for a hands-on session exploring design systems that scale, accessibility patterns, and practical developer experience improvements you can adopt right away.</p>
+  host: "SuretyNest Financial Solutions · Bhaskara Kovvada",
+  description: `<p>Join Bhaskara Kovvada for a hands-on session exploring design systems that scale, accessibility patterns, and practical developer experience improvements you can adopt right away.</p>
      <ul>
        <li>Short talk: design tokens & theming</li>
        <li>Live demo: building a small component library</li>

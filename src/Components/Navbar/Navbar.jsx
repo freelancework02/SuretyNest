@@ -29,7 +29,7 @@ const Navbar = () => {
             src={Logo}
             alt="Logo"
             id="logo"
-            className="w-auto h-40 sm:h-20 md:h-40 lg:h-28 object-contain"
+            className="w-auto h-40 sm:h-20 md:h-50 lg:h-28 object-contain"
           />
         </div>
 
@@ -40,11 +40,10 @@ const Navbar = () => {
               <Link
                 key={item.name}
                 to={item.path}
-                className={`px-2 py-2 text-[17px] transition duration-300 ${
-                  location.pathname === item.path
+                className={`px-2 py-2 text-[17px] transition duration-300 ${location.pathname === item.path
                     ? "border-[#fff] border-b-2 text-[#333]"
                     : "hover:border-b-2 hover:border-[#333]"
-                }`}
+                  }`}
               >
                 {item.name}
               </Link>
@@ -63,9 +62,8 @@ const Navbar = () => {
 
       {/* Mobile Sidebar */}
       <div
-        className={`fixed top-0 right-0 h-full w-2/3 sm:w-1/2 bg-white shadow-lg flex flex-col items-start pt-12 transition-transform duration-300 ${
-          isOpen ? "translate-x-0" : "translate-x-full"
-        } lg:hidden`}
+        className={`fixed top-0 right-0 h-full w-2/3 sm:w-1/2 bg-white shadow-lg flex flex-col items-start pt-12 transition-transform duration-300 ${isOpen ? "translate-x-0" : "translate-x-full"
+          } lg:hidden`}
       >
         {/* Close Button */}
         <button
@@ -82,11 +80,10 @@ const Navbar = () => {
               key={item.name}
               to={item.path}
               onClick={() => setIsOpen(false)}
-              className={`w-full py-3 text-[16px] border-b px-4 transition ${
-                location.pathname === item.path
+              className={`w-full py-3 text-[16px] border-b px-4 transition ${location.pathname === item.path
                   ? "bg-[#f7d88b] text-white"
                   : "hover:bg-[#f7d88b] hover:text-white"
-              }`}
+                }`}
             >
               {item.name}
             </Link>

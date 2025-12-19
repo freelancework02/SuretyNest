@@ -61,11 +61,11 @@ export default function FoundationalCommitmentsGold() {
     e.preventDefault();
     if (typeof window !== "undefined" && window.Calendly?.initPopupWidget) {
       window.Calendly.initPopupWidget({
-        url: "https://calendly.com/vmfinsolutions/financialneedanalysis",
+        url: "https://calendly.com/contact-suretynest/30min",
       });
     } else if (typeof window !== "undefined") {
       window.open(
-        "https://calendly.com/vmfinsolutions/financialneedanalysis",
+        "https://calendly.com/contact-suretynest/30min",
         "_blank",
         "noopener,noreferrer"
       );
@@ -228,11 +228,10 @@ export default function FoundationalCommitmentsGold() {
                       boxShadow: isOpen
                         ? "0 18px 40px rgba(8,42,72,0.10)"
                         : "0 6px 18px rgba(8,42,72,0.05)",
-                      border: `1px solid ${
-                        isOpen
+                      border: `1px solid ${isOpen
                           ? "rgba(201,148,59,0.35)"
                           : "rgba(3,43,85,0.06)"
-                      }`,
+                        }`,
                       background: isOpen
                         ? "#ffffff"
                         : "linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,255,255,0.96))",
@@ -273,9 +272,8 @@ export default function FoundationalCommitmentsGold() {
                         }}
                       >
                         <ChevronDown
-                          className={`w-4 h-4 transform transition-transform duration-300 ${
-                            isOpen ? "rotate-180" : ""
-                          }`}
+                          className={`w-4 h-4 transform transition-transform duration-300 ${isOpen ? "rotate-180" : ""
+                            }`}
                           style={{
                             color: isOpen ? DEEP_NAVY : "rgba(15,23,42,0.8)",
                           }}
@@ -312,11 +310,11 @@ export default function FoundationalCommitmentsGold() {
                 <div className="text-sm text-black/85">
                   Still have questions? Email{" "}
                   <a
-                    href="mailto:info@vmfinancialsolutions.com"
+                    href="mailto:Contact@suretynest.com"
                     className="font-semibold"
                     style={{ color: DEEP_NAVY }}
                   >
-                    info@vmfinancialsolutions.com
+                    Contact@suretynest.com
                   </a>
                 </div>
               </div>

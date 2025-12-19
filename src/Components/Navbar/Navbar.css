@@ -2,7 +2,8 @@
 @media (max-width: 650px) {
   #logo {
     width: auto;
-    height: 100px;     /* clean readable size */
+    height: 100px;
+    /* clean readable size */
     object-fit: contain;
   }
 

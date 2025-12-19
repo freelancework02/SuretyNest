@@ -85,7 +85,7 @@ export default function PartnerProgramSuretyNest() {
   }, []);
 
   const openCalendly = (
-    url = "https://calendly.com/vmfinsolutions/financialneedanalysis"
+    url = "https://calendly.com/contact-suretynest/30min"
   ) => {
     if (typeof window === "undefined") return;
 

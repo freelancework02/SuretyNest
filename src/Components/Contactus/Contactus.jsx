@@ -86,11 +86,11 @@ export default function ContactSection() {
   const openCalendly = () => {
     if (typeof window !== "undefined" && window.Calendly?.initPopupWidget) {
       window.Calendly.initPopupWidget({
-        url: "https://calendly.com/vmfinsolutions/financialneedanalysis",
+        url: "https://calendly.com/contact-suretynest/30min",
       });
     } else if (typeof window !== "undefined") {
       window.open(
-        "https://calendly.com/vmfinsolutions/financialneedanalysis",
+        "https://calendly.com/contact-suretynest/30min",
         "_blank",
         "noopener,noreferrer"
       );
@@ -250,16 +250,16 @@ export default function ContactSection() {
                   <div className="flex items-center gap-2">
                     <Mail size={16} />
                     <a
-                      href="mailto:info@vmfinancialsolutions.com"
+                      href="mailto:Contact@suretynest.com"
                       className="hover:underline"
                     >
-                      info@vmfinancialsolutions.com
+                      Contact@suretynest.com
                     </a>
                   </div>
                   <div className="flex items-center gap-2">
                     <Phone size={16} />
-                    <a href="tel:+13128639331" className="hover:underline">
-                      +1 (312) 863-9331
+                    <a href="tel:+15089696999" className="hover:underline">
+                      +1 (508) 969-6999
                     </a>
                   </div>
                 </div>
@@ -267,7 +267,7 @@ export default function ContactSection() {
                 {/* actions */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
                   <a
-                    href="mailto:info@vmfinancialsolutions.com"
+                    href="mailto:Contact@suretynest.com"
                     className="inline-flex items-center justify-center gap-2 rounded-xl px-4 py-3 bg-white/10 border border-white/20 text-white hover:bg-white/16 transition"
                     aria-label="Email us"
                   >
@@ -287,7 +287,7 @@ export default function ContactSection() {
                 </div>
 
                 <a
-                  href="https://api.whatsapp.com/send?phone=13128639331&text=Hello!"
+                  href="https://api.whatsapp.com/send?phone=15089696999&text=Hello!"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full inline-flex items-center justify-center gap-3 rounded-xl px-4 py-3 font-semibold text-white transition"
@@ -362,11 +362,10 @@ export default function ContactSection() {
                     type="text"
                     name="name"
                     placeholder="Jane Doe"
-                    className={`w-full p-3 rounded-lg border outline-none focus:ring-2 transition ${
-                      errors.name
-                        ? "border-red-300 focus:ring-red-400"
-                        : "border-gray-200 focus:ring-teal-500/40"
-                    }`}
+                    className={`w-full p-3 rounded-lg border outline-none focus:ring-2 transition ${errors.name
+                      ? "border-red-300 focus:ring-red-400"
+                      : "border-gray-200 focus:ring-teal-500/40"
+                      }`}
                     value={formData.name}
                     onChange={handleChange}
                     aria-invalid={!!errors.name}
@@ -396,11 +395,10 @@ export default function ContactSection() {
                     type="email"
                     name="email"
                     placeholder="Enter your email address"
-                    className={`w-full p-3 rounded-lg border outline-none focus:ring-2 transition ${
-                      errors.email
-                        ? "border-red-300 focus:ring-red-400"
-                        : "border-gray-200 focus:ring-teal-500/40"
-                    }`}
+                    className={`w-full p-3 rounded-lg border outline-none focus:ring-2 transition ${errors.email
+                      ? "border-red-300 focus:ring-red-400"
+                      : "border-gray-200 focus:ring-teal-500/40"
+                      }`}
                     value={formData.email}
                     onChange={handleChange}
                     aria-invalid={!!errors.email}
@@ -429,11 +427,10 @@ export default function ContactSection() {
                     id="message"
                     name="message"
                     placeholder="How can we help?"
-                    className={`w-full p-3 rounded-lg min-h-[140px] border outline-none focus:ring-2 resize-y transition ${
-                      errors.message
-                        ? "border-red-300 focus:ring-red-400"
-                        : "border-gray-200 focus:ring-teal-500/40"
-                    }`}
+                    className={`w-full p-3 rounded-lg min-h-[140px] border outline-none focus:ring-2 resize-y transition ${errors.message
+                      ? "border-red-300 focus:ring-red-400"
+                      : "border-gray-200 focus:ring-teal-500/40"
+                      }`}
                     value={formData.message}
                     onChange={handleChange}
                     aria-invalid={!!errors.message}
@@ -452,9 +449,8 @@ export default function ContactSection() {
 
                 <button
                   type="submit"
-                  className={`w-full py-3 rounded-xl font-semibold text-white transition-all flex items-center justify-center gap-2 ${
-                    isSubmitting ? "bg-gray-300 cursor-not-allowed" : ""
-                  }`}
+                  className={`w-full py-3 rounded-xl font-semibold text-white transition-all flex items-center justify-center gap-2 ${isSubmitting ? "bg-gray-300 cursor-not-allowed" : ""
+                    }`}
                   disabled={isSubmitting}
                   aria-busy={isSubmitting}
                   style={{

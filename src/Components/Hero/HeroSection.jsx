@@ -15,11 +15,11 @@ export default function HeroModern({ onBook = () => {} }) {
     onBook();
     if (typeof window !== "undefined" && window.Calendly?.initPopupWidget) {
       window.Calendly.initPopupWidget({
-        url: "https://calendly.com/vmfinsolutions/financialneedanalysis",
+        url: "https://calendly.com/contact-suretynest/30min",
       });
     } else {
       window.open(
-        "https://calendly.com/vmfinsolutions/financialneedanalysis",
+        "https://calendly.com/contact-suretynest/30min",
         "_blank",
         "noopener,noreferrer"
       );

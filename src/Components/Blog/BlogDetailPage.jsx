@@ -280,7 +280,7 @@ export default function BlogDetailVariantA() {
                       onClick={() =>
                         window.open(
                           blog.meetingLink ||
-                            "https://calendly.com/vmfinsolutions/financialneedanalysis",
+                            "https://calendly.com/contact-suretynest/30min",
                           "_blank",
                           "noopener,noreferrer"
                         )
@@ -299,7 +299,7 @@ export default function BlogDetailVariantA() {
                       onClick={() =>
                         window.open(
                           blog.meetingLink ||
-                            "https://calendly.com/vmfinsolutions/financialneedanalysis",
+                            "https://calendly.com/contact-suretynest/30min",
                           "_blank",
                           "noopener,noreferrer"
                         )

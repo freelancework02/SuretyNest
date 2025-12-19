@@ -71,11 +71,11 @@ const FALLBACK_SVG = `data:image/svg+xml;utf8,${encodeURIComponent(
 function openCalendly() {
   if (typeof window !== "undefined" && window.Calendly?.initPopupWidget) {
     window.Calendly.initPopupWidget({
-      url: "https://calendly.com/vmfinsolutions/financialneedanalysis",
+      url: "https://calendly.com/contact-suretynest/30min",
     });
   } else if (typeof window !== "undefined") {
     window.open(
-      "https://calendly.com/vmfinsolutions/financialneedanalysis",
+      "https://calendly.com/contact-suretynest/30min",
       "_blank",
       "noopener,noreferrer"
     );

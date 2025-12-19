@@ -10,18 +10,18 @@ const TEXT = "#0f3144";
 
 export default function AboutUsFounder({
   founderImage,
-  founderName = "Bhaskar",
-  initials = "B",
+  founderName = "Bhaskar Kovvada",
+  initials = "BK",
 }) {
   const openCalendly = (e) => {
     e.preventDefault();
     if (typeof window !== "undefined" && window.Calendly?.initPopupWidget) {
       window.Calendly.initPopupWidget({
-        url: "https://calendly.com/vmfinsolutions/financialneedanalysis",
+        url: "https://calendly.com/contact-suretynest/30min",
       });
     } else if (typeof window !== "undefined") {
       window.open(
-        "https://calendly.com/vmfinsolutions/financialneedanalysis",
+        "https://calendly.com/contact-suretynest/30min",
         "_blank",
         "noopener,noreferrer"
       );
@@ -105,13 +105,13 @@ export default function AboutUsFounder({
 
               <div className="mt-4 text-sm md:text-base text-black/80 space-y-4 leading-relaxed">
                 <p>
-                 At SuretyNest, our mission is to empower individuals and families to build a secure financial future with confidence and clarity.
-We move beyond transactions to establish genuine partnerships, crafting customized strategies for growth while ensuring your loved ones have security for life through robust insurance and thoughtful retirement planning.
-We are also actively seeking to expand our reach and impact. 
-We invite driven financial professionals and business partners who share our commitment to trust, growth, and client-centric solutions to join the SuretyNest network and help us redefine financial security for more people. We are dedicated to delivering trustworthy guidance and peace of mind at every stage of the financial journey.
+                  At SuretyNest, our mission is to empower individuals and families to build a secure financial future with confidence and clarity.
+                  We move beyond transactions to establish genuine partnerships, crafting customized strategies for growth while ensuring your loved ones have security for life through robust insurance and thoughtful retirement planning.
+                  We are also actively seeking to expand our reach and impact.
+                  We invite driven financial professionals and business partners who share our commitment to trust, growth, and client-centric solutions to join the SuretyNest network and help us redefine financial security for more people. We are dedicated to delivering trustworthy guidance and peace of mind at every stage of the financial journey.
                 </p>
 
-            
+
               </div>
 
               {/* quick facts */}

@@ -14,7 +14,7 @@ export default function Navbar() {
                 <FinancialLogo />
               </div>
               <div>
-                <h1 className="text-[#E5B80B] font-bold text-xl md:text-2xl">VM FINANCIAL SOLUTIONS</h1>
+                <h1 className="text-[#E5B80B] font-bold text-xl md:text-2xl">SuretyNest Financial Solutions</h1>
                 <p className="text-[#E5B80B] text-xs md:text-sm tracking-wider">
                   MINIMIZE RISK <span className="mx-2">|</span> OPTIMIZE <span className="mx-2">|</span> MAXIMIZE GROWTH
                 </p>
@@ -48,14 +48,14 @@ export default function Navbar() {
         <div className="hidden lg:flex flex-col items-end space-y-1">
           <div className="flex items-center">
             <Phone className="h-4 w-4 mr-2" />
-            <a href="tel:312-863-9331" className="text-white hover:text-[#E5B80B]">
-              312-863-9331
+            <a href="tel:508-969-6999" className="text-white hover:text-[#E5B80B]">
+              508-969-6999
             </a>
           </div>
           <div className="flex items-center">
             <Mail className="h-4 w-4 mr-2" />
-            <a href="mailto:info@vmfinancialsolutions.com" className="text-white hover:text-[#E5B80B]">
-              info@vmfinancialsolutions.com
+            <a href="mailto:Contact@suretynest.com" className="text-white hover:text-[#E5B80B]">
+              Contact@suretynest.com
             </a>
           </div>
         </div>
@@ -64,14 +64,14 @@ export default function Navbar() {
           <div className="flex flex-col space-y-3 mt-3">
             <div className="flex items-center">
               <Phone className="h-4 w-4 mr-2" />
-              <a href="tel:312-863-9331" className="text-white hover:text-[#E5B80B]">
-                312-863-9331
+              <a href="tel:508-969-6999" className="text-white hover:text-[#E5B80B]">
+                508-969-6999
               </a>
             </div>
             <div className="flex items-center">
               <Mail className="h-4 w-4 mr-2" />
-              <a href="mailto:info@vmfinancialsolutions.com" className="text-white hover:text-[#E5B80B]">
-                info@vmfinancialsolutions.com
+              <a href="mailto:Contact@suretynest.com" className="text-white hover:text-[#E5B80B]">
+                Contact@suretynest.com
               </a>
             </div>
           </div>
