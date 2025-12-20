@@ -1,5 +1,6 @@
 // AboutUs.FounderFirst.jsx
 import React from "react";
+import DEFAULT_FOUNDER_IMAGE from "../../assets/images/bhaskara.jpeg";
 
 const GOLD_START = "#f7d88b";
 const GOLD_END = "#c9943b";
@@ -8,9 +9,12 @@ const DEEP_NAVY = "#082a48";
 const TEAL = "#137a6c";
 const TEXT = "#0f3144";
 
+// Default Founder Image (Change this to your actual image path)
+
+
 export default function AboutUsFounder({
-  founderImage,
-  founderName = "Bhaskar Kovvada",
+  founderImage = DEFAULT_FOUNDER_IMAGE,
+  founderName = "Bhaskara Kovvada",
   initials = "BK",
 }) {
   const openCalendly = (e) => {
@@ -59,7 +63,6 @@ export default function AboutUsFounder({
               Guiding your{" "}
               <span
                 style={{
-                  // background: `linear-gradient(90deg, ${GOLD_START}, ${TEAL})`,
                   WebkitBackgroundClip: "text",
                   color: TEAL,
                 }}
@@ -87,7 +90,6 @@ export default function AboutUsFounder({
               className="bg-white rounded-3xl p-6 md:p-8 shadow-[0_18px_48px_rgba(8,42,72,0.06)] border relative overflow-hidden"
               style={{ borderColor: "rgba(8,42,72,0.06)" }}
             >
-              {/* gold accent bar */}
               <div
                 aria-hidden
                 className="absolute left-0 top-0 h-full w-1.5"
@@ -105,13 +107,18 @@ export default function AboutUsFounder({
 
               <div className="mt-4 text-sm md:text-base text-black/80 space-y-4 leading-relaxed">
                 <p>
-                  At SuretyNest, our mission is to empower individuals and families to build a secure financial future with confidence and clarity.
-                  We move beyond transactions to establish genuine partnerships, crafting customized strategies for growth while ensuring your loved ones have security for life through robust insurance and thoughtful retirement planning.
-                  We are also actively seeking to expand our reach and impact.
-                  We invite driven financial professionals and business partners who share our commitment to trust, growth, and client-centric solutions to join the SuretyNest network and help us redefine financial security for more people. We are dedicated to delivering trustworthy guidance and peace of mind at every stage of the financial journey.
+                  At SuretyNest, our mission is to empower individuals and
+                  families to build a secure financial future with confidence
+                  and clarity. We move beyond transactions to establish genuine
+                  partnerships, crafting customized strategies for growth while
+                  ensuring your loved ones have security for life through robust
+                  insurance and thoughtful retirement planning. We invite driven
+                  financial professionals and business partners who share our
+                  commitment to trust, growth, and client-centric solutions to
+                  join the SuretyNest network. We are dedicated to delivering
+                  trustworthy guidance and peace of mind at every stage of the
+                  financial journey.
                 </p>
-
-
               </div>
 
               {/* quick facts */}
@@ -192,7 +199,6 @@ export default function AboutUsFounder({
           {/* Founder portrait column */}
           <div className="lg:col-span-5 order-1 lg:order-2 flex justify-center lg:justify-end">
             <div className="relative w-full max-w-[360px]">
-              {/* decorative background panel */}
               <div
                 aria-hidden
                 className="absolute -inset-y-5 -left-4 right-4 rounded-3xl"
@@ -204,14 +210,13 @@ export default function AboutUsFounder({
                 }}
               />
 
-              {/* main founder card */}
               <div
                 className="relative bg-white rounded-3xl p-6 md:p-7 shadow-[0_24px_60px_rgba(8,42,72,0.10)] border"
                 style={{ borderColor: "rgba(8,42,72,0.08)" }}
               >
                 {/* top row */}
                 <div className="flex items-start gap-4">
-                  {/* portrait / initials */}
+                  {/* portrait */}
                   <div className="relative">
                     <div
                       className="w-20 h-20 rounded-full overflow-hidden flex items-center justify-center border-4"
@@ -222,20 +227,11 @@ export default function AboutUsFounder({
                           "linear-gradient(135deg, #f9fafb, #e5e7eb)",
                       }}
                     >
-                      {founderImage ? (
-                        <img
-                          src={founderImage}
-                          alt={founderName}
-                          className="w-full h-full object-cover"
-                        />
-                      ) : (
-                        <span
-                          className="text-2xl font-bold"
-                          style={{ color: DEEP_NAVY }}
-                        >
-                          {initials}
-                        </span>
-                      )}
+                      <img
+                        src={founderImage}
+                        alt={founderName}
+                        className="w-full h-full object-cover"
+                      />
                     </div>
                   </div>
 
@@ -275,7 +271,7 @@ export default function AboutUsFounder({
                   decisions that truly support your future.”
                 </div>
 
-                {/* card footer */}
+                {/* footer */}
                 <div
                   className="mt-6 pt-4 border-t flex items-center justify-between gap-3"
                   style={{ borderColor: "rgba(8,42,72,0.06)" }}
@@ -295,7 +291,6 @@ export default function AboutUsFounder({
                 </div>
               </div>
 
-              {/* subtle gold glow behind the card */}
               <div
                 aria-hidden
                 className="absolute -right-10 -top-8 w-[220px] h-[220px] rounded-full"
