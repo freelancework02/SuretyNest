@@ -2,9 +2,12 @@
 import React, { useState } from "react";
 import { FaWhatsapp } from "react-icons/fa";
 import { Mail, Phone, Calendar, ShieldCheck } from "lucide-react";
-import emailjs from "emailjs-com";
+
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
+
 import Logo from "../../assets/Logo/logobg.png";
 
 // SuretyNest palette
@@ -21,6 +24,8 @@ export default function ContactSection() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
+    phone: "",
+
     message: "",
     company: "", // honeypot
   });
@@ -37,6 +42,11 @@ export default function ContactSection() {
     if (!emailOk) {
       newErrors.email = "Please enter a valid email address.";
     }
+
+    if (!formData.phone || formData.phone.length < 8) {
+      newErrors.phone = "Please enter a valid phone number.";
+    }
+
     if (!formData.message || formData.message.trim().length < 12) {
       newErrors.message = "Tell us a bit more (at least 12 characters).";
     }
@@ -51,36 +61,41 @@ export default function ContactSection() {
   const handleChange = (e) =>
     setFormData((s) => ({ ...s, [e.target.name]: e.target.value }));
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) return;
 
     setIsSubmitting(true);
-    const templateParams = {
-      from_name: formData.name,
+
+    const payload = {
+      name: formData.name,
       email: formData.email,
-      message: formData.message,
+      phone: formData.phone,
+      msg: formData.message,
     };
 
-    emailjs
-      .send(
-        "service_clfjpui",
-        "template_329vuuu",
-        templateParams,
-        "CVKrczuvBFE0HOIOy"
-      )
-      .then(
-        () => {
-          toast.success("🎉 Thanks — your message has been sent.");
-          setFormData({ name: "", email: "", message: "", company: "" });
-          setErrors({});
+    try {
+      const response = await fetch("http://localhost:3000/api/contact/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-        (error) => {
-          console.error(error);
-          toast.error("❌ Could not send your message. Please try again.");
-        }
-      )
-      .finally(() => setIsSubmitting(false));
+        body: JSON.stringify(payload),
+      });
+
+      if (response.ok) {
+        toast.success("🎉 Thanks — your message has been sent.");
+        setFormData({ name: "", email: "", phone: "", message: "", company: "" });
+        setErrors({});
+      } else {
+        throw new Error("Failed to send message");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("❌ Could not send your message. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const openCalendly = () => {
@@ -411,6 +426,36 @@ export default function ContactSection() {
                       role="alert"
                     >
                       {errors.email}
+                    </p>
+                  )}
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="phone"
+                    className="block text-sm font-semibold mb-1.5"
+                    style={{ color: NAVY }}
+                  >
+                    Phone Number
+                  </label>
+
+                  <PhoneInput
+                    country={"in"}
+                    onlyCountries={["us", "in", "ca"]}
+                    value={formData.phone}
+                    onChange={(value) =>
+                      setFormData((s) => ({ ...s, phone: value }))
+                    }
+                    inputProps={{
+                      name: "phone",
+                      required: true,
+                    }}
+                    inputClass="!w-full !p-3 !rounded-lg !border !border-gray-200 focus:!ring-2 focus:!ring-teal-500/40 !outline-none"
+                  />
+
+                  {errors.phone && (
+                    <p className="text-red-600 text-sm mt-1" role="alert">
+                      {errors.phone}
                     </p>
                   )}
                 </div>
