@@ -28,65 +28,88 @@ const SURFACE = "#FFFFFF";
 const GOLD_GRADIENT = `linear-gradient(135deg, ${GOLD_START}, ${GOLD_END})`;
 const NAVY_GRADIENT = `linear-gradient(135deg, ${BRAND_NAVY}, ${BRAND_TEAL})`;
 
-/* ---------- demo data (used when no event prop provided) ---------- */
-const DEMO_EVENT = {
-  title: "Design Systems & DX — Practical Deep Dive",
-  date: "2025-11-24T18:30:00+05:30",
-  host: "SuretyNest Financial Solutions · Bhaskara Kovvada",
-  description: `<p>Join Bhaskara Kovvada for a hands-on session exploring design systems that scale, accessibility patterns, and practical developer experience improvements you can adopt right away.</p>
-     <ul>
-       <li>Short talk: design tokens & theming</li>
-       <li>Live demo: building a small component library</li>
-       <li>Q&amp;A and practical next steps</li>
-     </ul>
-     <p>Bring your questions — this session is interactive.</p>`,
-  thumbnailUrl:
-    "https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?q=80&w=1600&auto=format&fit=crop",
-  gallery: [
-    "https://images.unsplash.com/photo-1551836022-d5d88e9218df?q=80&w=1400&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=1400&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=1400&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1504805572947-34fad45aed93?q=80&w=1400&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=1400&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1487014679447-9f8336841d58?q=80&w=1400&auto=format&fit=crop",
-  ],
-  meetingLink: "https://meet.google.com/example-meet-link",
-};
-
-const DEMO_PREVIOUS = [
-  {
-    id: "prev-101",
-    title: "Frontend Roadmap: Build with Confidence",
-    date: "2025-10-22T18:00:00+05:30",
-    thumbnailUrl:
-      "https://images.unsplash.com/photo-1551836022-d5d88e9218df?q=80&w=1400&auto=format&fit=crop",
-    recordingLink: "https://example.com/recording/frontend-roadmap",
-  },
-  {
-    id: "prev-102",
-    title: "React Accessibility Patterns",
-    date: "2025-09-10T17:00:00+05:30",
-    thumbnailUrl:
-      "https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=800&auto=format&fit=crop",
-    recordingLink: "https://example.com/recording/react-a11y",
-  },
-  {
-    id: "prev-103",
-    title: "Practical Performance Budgets",
-    date: "2025-08-05T16:00:00+05:30",
-    thumbnailUrl:
-      "https://images.unsplash.com/photo-1504805572947-34fad45aed93?q=80&w=800&auto=format&fit=crop",
-    recordingLink: "https://example.com/recording/perf-budgets",
-  },
-];
+const API_BASE = "https://suretynest.com";
 
 /* -------------------- component -------------------- */
-export default function EventsDetailModern({ event = null, previousEvents = null }) {
-  const model = useMemo(() => ({ ...(event || DEMO_EVENT) }), [event]);
-  const prevList =
-    Array.isArray(previousEvents) && previousEvents.length
-      ? previousEvents
-      : DEMO_PREVIOUS;
+export default function EventsDetailModern() {
+  const [activeEvent, setActiveEvent] = useState(null);
+  const [previousEvents, setPreviousEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        setLoading(true);
+        // 1. Fetch active events (listEvents returns page, per, data)
+        const activeRes = await fetch(`${API_BASE}/api/events?page=1&per=1`);
+        const activeJson = await activeRes.json();
+        const activeData = activeJson.data ? activeJson.data : [];
+
+        if (activeData.length > 0) {
+          const rawEvt = activeData[0];
+          // Get full details + images for this event
+          const detailRes = await fetch(`${API_BASE}/api/events/${rawEvt.id}`);
+          const detailJson = await detailRes.json();
+          if (detailJson.event) {
+            const evt = detailJson.event;
+            const imgs = detailJson.images || [];
+
+            // Construct gallery URLs
+            const gallery = imgs.map(img => `${API_BASE}/api/events/image/${img.id}/blob`);
+
+            // Construct thumbnail URL (cover image)
+            let thumbnail = "";
+            if (evt.cover_image_id) {
+              thumbnail = `${API_BASE}/api/events/image/${evt.cover_image_id}/blob`;
+            } else if (gallery.length > 0) {
+              thumbnail = gallery[0];
+            }
+
+            setActiveEvent({
+              title: evt.title,
+              date: evt.display_datetime || evt.event_date, // prefer display_datetime from list if avlbl, or raw
+              timezone: evt.event_timezone, // Store timezone
+              host: evt.hosted_by || "SuretyNest",
+              description: evt.description || "",
+              thumbnailUrl: thumbnail,
+              gallery: gallery,
+              meetingLink: evt.link
+            });
+          }
+        }
+
+        // 2. Fetch previous events
+        const prevRes = await fetch(`${API_BASE}/api/events/previous`);
+        const prevJson = await prevRes.json();
+        /* The controller returns { data: [...] } for listPreviousEvents */
+        const prevData = prevJson.data || [];
+
+        const mappedPrev = prevData.map(p => {
+          let thumb = "";
+          if (p.cover_image_id) {
+            thumb = `${API_BASE}/api/events/image/${p.cover_image_id}/blob`;
+          }
+          return {
+            id: p.id,
+            title: p.title,
+            date: p.display_datetime || p.event_date,
+            thumbnailUrl: thumb,
+            recordingLink: p.link
+          };
+        });
+        setPreviousEvents(mappedPrev);
+
+      } catch (err) {
+        console.error("Failed to load events", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchEvents();
+  }, []);
+
+  const model = activeEvent || {};
+  const prevList = previousEvents;
 
   const images = Array.isArray(model.gallery) ? model.gallery : [];
   const hasGallery = images.length > 0;
@@ -95,10 +118,7 @@ export default function EventsDetailModern({ event = null, previousEvents = null
   const [lightboxIndex, setLightboxIndex] = useState(0);
   const lightboxRef = useRef(null);
 
-  const formattedDate = useMemo(
-    () => safeFormatDate(model.date),
-    [model.date]
-  );
+  const formattedDate = safeFormatDate(model.date, model.timezone);
 
   /* keyboard nav for lightbox */
   useEffect(() => {
@@ -153,7 +173,7 @@ export default function EventsDetailModern({ event = null, previousEvents = null
       {/* HERO */}
       <div className="relative w-full max-w-6xl mx-auto px-4 md:px-6 pt-6">
         <div className="relative h-64 md:h-96 lg:h-[520px] w-full overflow-hidden rounded-[32px] shadow-[0_22px_60px_rgba(2,37,72,0.35)] border border-[rgba(2,37,72,0.08)]">
-          {model.thumbnailUrl ? (
+          {!loading && model.thumbnailUrl ? (
             <img
               src={model.thumbnailUrl}
               alt={model.title}
@@ -161,7 +181,9 @@ export default function EventsDetailModern({ event = null, previousEvents = null
               loading="lazy"
             />
           ) : (
-            <div className="w-full h-full bg-gray-100" />
+            <div className="w-full h-full bg-gray-100 flex items-center justify-center text-gray-400">
+              {loading ? "Loading..." : "No active event"}
+            </div>
           )}
           {/* brand overlay */}
           <div
@@ -207,11 +229,11 @@ export default function EventsDetailModern({ event = null, previousEvents = null
                     className="text-lg md:text-xl lg:text-2xl font-extrabold leading-snug"
                     style={{ color: BRAND_NAVY }}
                   >
-                    {model.title}
+                    {model.title || (loading ? "Loading Event..." : "No Upcoming Event")}
                   </h1>
                   <div className="mt-1 flex items-center gap-2 text-xs md:text-sm">
                     <FiUser className="text-[13px]" style={{ color: BRAND_TEAL }} />
-                    <span className="text-black/70">{model.host}</span>
+                    <span className="text-black/70">{model.host || "SuretyNest"}</span>
                   </div>
                 </div>
 
@@ -561,11 +583,11 @@ export default function EventsDetailModern({ event = null, previousEvents = null
 
 /* ---------------- helpers ---------------- */
 
-function safeFormatDate(d) {
+function safeFormatDate(d, tz) {
   try {
     const dt = new Date(d);
     if (Number.isNaN(dt.getTime())) return String(d || "");
-    return dt.toLocaleString(undefined, {
+    const dateStr = dt.toLocaleString(undefined, {
       weekday: "short",
       year: "numeric",
       month: "short",
@@ -573,6 +595,7 @@ function safeFormatDate(d) {
       hour: "2-digit",
       minute: "2-digit",
     });
+    return tz ? `${dateStr} ${tz}` : dateStr;
   } catch {
     return String(d || "");
   }

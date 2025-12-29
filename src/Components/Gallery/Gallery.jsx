@@ -1,23 +1,12 @@
 // EventsGallery.Attractive.jsx
 import React, { useEffect, useState } from "react";
-import { getFirestore, collection, getDocs } from "firebase/firestore";
-import { initializeApp } from "firebase/app";
+
 import img1 from "../../assets/images/img1.jpeg";
 import img2 from "../../assets/images/img2.jpeg";
 import img3 from "../../assets/images/img3.jpeg";
 import img4 from "../../assets/images/img4.jpeg";
 
-/* ---------- Firebase (unchanged) ---------- */
-const firebaseConfig = {
-  apiKey: "AIzaSyBg2p1nPZQ39AU91CDzRWeYtQjBs5HHf-Y",
-  authDomain: "ajazgraphic-da740.firebaseapp.com",
-  projectId: "ajazgraphic-da740",
-  storageBucket: "ajazgraphic-da740.appspot.com",
-  messagingSenderId: "600209988666",
-  appId: "1:600209988666:web:d806f6d7dfd10fa394a903",
-};
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+const API_BASE = "https://suretynest.com";
 
 // SuretyNest Branding Colors
 const BRAND_NAVY = "#022548";
@@ -30,25 +19,7 @@ const EXTRA_IMAGES = [img1, img2, img3, img4];
 const goldGradient = `linear-gradient(135deg, ${GOLD_START}, ${GOLD_END})`;
 
 // Normalize images coming from Firestore
-const normalizeImages = (data) => {
-  if (!data) return [];
 
-  if (Array.isArray(data.images) && data.images.length > 0) {
-    return data.images;
-  }
-  if (Array.isArray(data.imageUrls) && data.imageUrls.length > 0) {
-    return data.imageUrls;
-  }
-
-  const singleFields = ["image", "imageUrl", "coverImage", "thumbnail"];
-  for (const key of singleFields) {
-    if (typeof data[key] === "string" && data[key].trim() !== "") {
-      return [data[key]];
-    }
-  }
-
-  return [];
-};
 
 export default function EventsGalleryAttractive() {
   const [eventsData, setEventsData] = useState([]);
@@ -68,22 +39,48 @@ export default function EventsGalleryAttractive() {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const qs = await getDocs(collection(db, "properedgefinance"));
+        const response = await fetch(`${API_BASE}/api/galleries`);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
 
-        const events = qs.docs
-          .map((doc) => {
-            const raw = doc.data();
-            const images = normalizeImages(raw);
+        // Handle if response is wrapped in an object or just an array
+        const rawEvents = Array.isArray(data) ? data : (data.galleries || []);
+
+        const events = rawEvents
+          .map((item) => {
+            // Determine images array
+            let imageUrls = [];
+            // If the API returns 'images' as array of IDs/filenames
+            if (Array.isArray(item.images) && item.images.length > 0) {
+              imageUrls = item.images.map(imgStr => {
+                // If it's already a full URL, keep it. Otherwise construct blob URL
+                if (typeof imgStr === 'string' && (imgStr.startsWith('http') || imgStr.startsWith('data:'))) {
+                  return imgStr;
+                }
+                return `${API_BASE}/api/galleries/image/${imgStr}/blob`;
+              });
+            } else if (item.image) {
+              // Fallback for single image
+              const imgStr = item.image;
+              if (typeof imgStr === 'string' && (imgStr.startsWith('http') || imgStr.startsWith('data:'))) {
+                imageUrls = [imgStr];
+              } else {
+                imageUrls = [`${API_BASE}/api/galleries/image/${imgStr}/blob`];
+              }
+            }
 
             return {
-              id: parseInt(doc.id, 10) || doc.id,
-              ...raw,
-              images,
+              id: item._id || item.id,
+              ...item,
+              images: imageUrls,
             };
           })
           .filter((e) => e.images && e.images.length > 0);
 
-        events.sort((a, b) => (a.id > b.id ? 1 : -1));
+        // Optional: ensure numeric sort if IDs are comparable, otherwise default order
+        // events.sort((a, b) => (a.id > b.id ? 1 : -1));
 
         const extrasItem = {
           id: "extras",
@@ -146,7 +143,7 @@ export default function EventsGalleryAttractive() {
 
   return (
     <section
-      className="mt-20  max-w-7xl mx-auto px-4 py-16 rounded-3xl"
+      className="mt-20 mb-20  max-w-7xl mx-auto px-4 py-16 rounded-3xl"
       style={{
         background:
           "radial-gradient(circle at top, #fdf9f0 0, #f3f6fb 40%, #f5f7fa 100%)",
@@ -183,12 +180,7 @@ export default function EventsGalleryAttractive() {
 
         {/* Filters */}
         <div className="flex flex-col items-end gap-3 w-full md:w-auto">
-          <span
-            className="text-xs uppercase tracking-[0.2em] font-semibold"
-            style={{ color: BRAND_NAVY }}
-          >
-            FILTER BY CATEGORY
-          </span>
+
           <div className="flex gap-2 flex-wrap justify-end">
             {availableTags.map((t) => (
               <button
@@ -198,15 +190,15 @@ export default function EventsGalleryAttractive() {
                 style={
                   filter === t
                     ? {
-                        background: goldGradient,
-                        color: BRAND_NAVY,
-                        boxShadow: "0 10px 25px rgba(175,143,60,0.45)",
-                      }
+                      background: goldGradient,
+                      color: BRAND_NAVY,
+                      boxShadow: "0 10px 25px rgba(175,143,60,0.45)",
+                    }
                     : {
-                        background: WHITE,
-                        border: `1px solid ${BRAND_TEAL}40`,
-                        color: BRAND_TEAL,
-                      }
+                      background: WHITE,
+                      border: `1px solid ${BRAND_TEAL}40`,
+                      color: BRAND_TEAL,
+                    }
                 }
               >
                 {t}

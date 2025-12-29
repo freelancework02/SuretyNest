@@ -1,7 +1,6 @@
 // Blog.VariantB.Updated.jsx
 import React, { useEffect, useState } from "react";
-import { collection, getDocs } from "firebase/firestore";
-import { db } from "../../Components/Firebase/firebase";
+
 import { useNavigate } from "react-router-dom";
 
 // SuretyNest brand palette (from logo)
@@ -12,20 +11,40 @@ const GOLD_END = "#AF8F3C";
 const SURFACE = "#FFFFFF";
 const SOFT_BG = "#F5F7FA";
 
+const API_BASE = "https://suretynest.com";
+
 const goldGradient = `linear-gradient(135deg, ${GOLD_START}, ${GOLD_END})`;
 
 export default function BlogVariantBUpdated() {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [tags, setTags] = useState(["All"]);
-  const [activeTag, setActiveTag] = useState("All");
+
   const navigate = useNavigate();
 
   useEffect(() => {
     const loadBlogs = async () => {
       try {
-        const q = await getDocs(collection(db, "blogs"));
-        const items = q.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+        const response = await fetch(`${API_BASE}/api/blogs`);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+
+        // The controller returns: { page, per, data: [ ...rows... ] }
+        // So the array of blogs is in data.data
+        const rawItems = Array.isArray(data.data) ? data.data : [];
+
+        const items = rawItems.map((item) => {
+          // User specified route: api/blogs/image/{blogid}/blob
+          const imageUrl = `${API_BASE}/api/blogs/image/${item.id}/blob`;
+
+          return {
+            id: item.id, // API returns 'id'
+            ...item,
+            image: imageUrl
+          };
+        });
+
         // Sort by createdAt if available, else by id (descending -> newest first)
         items.sort((a, b) => {
           const aDate = a.createdAt ? new Date(a.createdAt).getTime() : 0;
@@ -34,12 +53,7 @@ export default function BlogVariantBUpdated() {
         });
         setBlogs(items);
 
-        const t = new Set(["All"]);
-        items.forEach((it) => {
-          if (it.tag) t.add(String(it.tag));
-          if (Array.isArray(it.tags)) it.tags.forEach((x) => t.add(String(x)));
-        });
-        setTags(Array.from(t));
+
       } catch (e) {
         console.error(e);
       } finally {
@@ -52,18 +66,24 @@ export default function BlogVariantBUpdated() {
   const featured = blogs.length ? blogs[0] : null;
   const list = blogs.slice(1);
 
-  const filtered =
-    activeTag === "All"
-      ? list
-      : list.filter((b) => {
-          if (!b) return false;
-          if (b.tag && b.tag === activeTag) return true;
-          if (Array.isArray(b.tags) && b.tags.includes(activeTag)) return true;
-          return false;
-        });
+
 
   const excerpt = (text = "", n = 140) =>
     String(text).length > n ? String(text).slice(0, n).trim() + "…" : text;
+
+  const openCalendly = () => {
+    if (typeof window !== "undefined" && window.Calendly?.initPopupWidget) {
+      window.Calendly.initPopupWidget({
+        url: "https://calendly.com/contact-suretynest/30min",
+      });
+    } else if (typeof window !== "undefined") {
+      window.open(
+        "https://calendly.com/contact-suretynest/30min",
+        "_blank",
+        "noopener,noreferrer"
+      );
+    }
+  };
 
   return (
     <section
@@ -102,40 +122,7 @@ export default function BlogVariantBUpdated() {
             </p>
           </div>
 
-          {/* tags / filters */}
-          <div className="flex flex-col items-start md:items-end gap-3">
-            <span
-              className="text-[11px] uppercase tracking-[0.18em] font-semibold"
-              style={{ color: BRAND_NAVY }}
-            >
-              FILTER BY TOPIC
-            </span>
-            <div className="flex gap-2 flex-wrap items-center justify-end">
-              {tags.map((t) => (
-                <button
-                  key={t}
-                  onClick={() => setActiveTag(t)}
-                  className="text-xs md:text-sm px-3 md:px-4 py-1.5 rounded-full font-medium transition-all focus:outline-none"
-                  style={
-                    activeTag === t
-                      ? {
-                          background: goldGradient,
-                          color: BRAND_NAVY,
-                          boxShadow: "0 8px 24px rgba(175,143,60,0.45)",
-                        }
-                      : {
-                          border: `1px solid ${BRAND_TEAL}30`,
-                          color: BRAND_TEAL,
-                          background: SURFACE,
-                        }
-                  }
-                  aria-pressed={activeTag === t}
-                >
-                  {t}
-                </button>
-              ))}
-            </div>
-          </div>
+
         </div>
 
         {/* loading state */}
@@ -188,8 +175,8 @@ export default function BlogVariantBUpdated() {
                   <p className="mt-2 text-white/90 max-w-2xl text-sm md:text-base">
                     {excerpt(
                       featured.summary ||
-                        featured.content ||
-                        featured.description,
+                      featured.content ||
+                      featured.description,
                       220
                     )}
                   </p>
@@ -211,7 +198,7 @@ export default function BlogVariantBUpdated() {
                       Read Article
                     </button>
 
-                    <button
+                    {/* <button
                       onClick={() =>
                         window.open(
                           featured.meetingLink || "#",
@@ -227,8 +214,8 @@ export default function BlogVariantBUpdated() {
                       }}
                       aria-disabled={!featured.meetingLink}
                     >
-                      {featured.meetingLink ? "Book a call" : "No meeting link"}
-                    </button>
+                      "Book a call"
+                    </button> */}
                   </div>
                 </div>
               </div>
@@ -263,8 +250,8 @@ export default function BlogVariantBUpdated() {
                     >
                       {excerpt(
                         featured.summary ||
-                          featured.content ||
-                          featured.description,
+                        featured.content ||
+                        featured.description,
                         260
                       )}
                     </div>
@@ -300,13 +287,7 @@ export default function BlogVariantBUpdated() {
                       </button>
 
                       <button
-                        onClick={() =>
-                          window.open(
-                            featured.meetingLink || "#",
-                            "_blank",
-                            "noopener,noreferrer"
-                          )
-                        }
+                        onClick={openCalendly}
                         className="px-4 py-3 rounded-xl border text-xs md:text-sm font-medium"
                         style={{
                           borderColor: "rgba(8,42,72,0.16)",
@@ -346,7 +327,7 @@ export default function BlogVariantBUpdated() {
         {/* cards grid */}
         {!loading && (
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 auto-rows-fr">
-            {filtered.map((blog) => (
+            {list.map((blog) => (
               <article
                 key={blog.id}
                 className="group relative flex flex-col rounded-2xl overflow-hidden bg-white border hover:border-[rgba(175,143,60,0.6)] shadow-sm hover:shadow-[0_18px_34px_rgba(2,37,72,0.16)] transform transition hover:-translate-y-1"
@@ -438,9 +419,9 @@ export default function BlogVariantBUpdated() {
             ))}
 
             {/* no posts message */}
-            {filtered.length === 0 && !loading && (
+            {list.length === 0 && !loading && (
               <div className="col-span-full p-8 rounded-2xl border text-center text-black/60 bg-white/70">
-                No articles found for &quot;{activeTag}&quot;.
+                No articles found.
               </div>
             )}
           </div>
