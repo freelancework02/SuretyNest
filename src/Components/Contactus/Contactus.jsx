@@ -1,14 +1,12 @@
-// ContactSection.GoldDeep.jsx (SuretyNest themed)
-import React, { useState } from "react";
+// ContactSection.GoldDeep.jsx (SuretyNest themed with EmailJS)
+import React, { useState, useRef } from "react";
 import { FaWhatsapp } from "react-icons/fa";
 import { Mail, Phone, Calendar, ShieldCheck } from "lucide-react";
-
+import emailjs from "@emailjs/browser"; // Import EmailJS
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
-
-import Logo from "../../assets/Logo/logobg.png";
 
 // SuretyNest palette
 const GOLD_START = "#f7d88b";
@@ -25,12 +23,14 @@ export default function ContactSection() {
     name: "",
     email: "",
     phone: "",
-
     message: "",
     company: "", // honeypot
   });
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  // Create a ref for the form
+  const formRef = useRef();
 
   const validateForm = () => {
     const newErrors = {};
@@ -67,31 +67,34 @@ export default function ContactSection() {
 
     setIsSubmitting(true);
 
-    const payload = {
-      name: formData.name,
-      email: formData.email,
-      phone: formData.phone,
-      msg: formData.message,
-    };
+    // Prepare template parameters for EmailJS
+ const templateParams = {
+  name: formData.name,           // Changed from "from_name" to "name"
+  email: formData.email,
+  phone: formData.phone,
+  message: formData.message,
+  submission_date: new Date().toLocaleString(),
+  current_year: new Date().getFullYear(),
+};
 
     try {
-      const response = await fetch("https://suretynest.com/api/contact/contact", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
+      // Send email using EmailJS
+      const result = await emailjs.send(
+        'service_clfjpui',      // Replace with your EmailJS Service ID
+        'template_329vuuu',     // Replace with your EmailJS Template ID
+        templateParams,
+        'CVKrczuvBFE0HOIOy'       // Replace with your EmailJS Public Key
+      );
 
-      if (response.ok) {
-        toast.success("🎉 Thanks — your message has been sent.");
+      if (result.text === 'OK') {
+        toast.success("🎉 Thanks — your message has been sent successfully!");
         setFormData({ name: "", email: "", phone: "", message: "", company: "" });
         setErrors({});
       } else {
         throw new Error("Failed to send message");
       }
     } catch (error) {
-      console.error(error);
+      console.error("EmailJS Error:", error);
       toast.error("❌ Could not send your message. Please try again.");
     } finally {
       setIsSubmitting(false);
@@ -138,34 +141,6 @@ export default function ContactSection() {
         {/* header row with logo + copy */}
         <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 mb-12">
           <div className="flex items-start gap-4">
-            {/* logo block */}
-            {/* <div className="flex flex-col items-center">
-              <div
-                className="h-16 w-16 rounded-3xl flex items-center justify-center shadow-xl mb-2"
-                style={{
-                  background: `linear-gradient(135deg, ${GOLD_START}, ${GOLD_END})`,
-                }}
-              >
-                <img
-                  src={Logo}
-                  alt="SuretyNest logo"
-                  className="h-12 w-auto object-contain"
-                />
-              </div>
-              <span
-                className="text-[11px] uppercase tracking-[0.24em] font-semibold"
-                style={{ color: NAVY }}
-              >
-                SuretyNest
-              </span>
-              <span
-                className="text-[11px] tracking-[0.18em] uppercase"
-                style={{ color: TEAL }}
-              >
-                Financial Solutions
-              </span>
-            </div> */}
-
             <div className="ml-1">
               <div className="inline-flex items-center gap-2 mb-2">
                 <span
@@ -200,7 +175,7 @@ export default function ContactSection() {
                 className="text-3xl md:text-4xl font-extrabold"
                 style={{ color: NAVY }}
               >
-                Let’s talk about your{" "}
+                Let's talk about your{" "}
                 <span
                   style={{
                     background: `linear-gradient(90deg, ${GOLD_START}, ${GOLD_END})`,
@@ -217,7 +192,7 @@ export default function ContactSection() {
                 style={{ color: "rgba(15,49,68,0.8)" }}
               >
                 Whether you prefer a short call, a detailed email, or a quick
-                WhatsApp message, we’ll help you get clear on your next step.
+                WhatsApp message, we'll help you get clear on your next step.
               </p>
             </div>
           </div>
@@ -257,7 +232,7 @@ export default function ContactSection() {
                   className="text-sm mb-4"
                   style={{ color: "rgba(226,232,240,0.9)" }}
                 >
-                  Choose what’s easiest for you — we’ll guide you from there.
+                  Choose what's easiest for you — we'll guide you from there.
                 </p>
 
                 {/* email / phone */}
@@ -343,11 +318,12 @@ export default function ContactSection() {
                 className="text-center text-sm md:text-base mb-6"
                 style={{ color: "rgba(15,49,68,0.75)" }}
               >
-                Share a bit about your situation and we’ll reply with clear,
+                Share a bit about your situation and we'll reply with clear,
                 practical next steps.
               </p>
 
               <form
+                ref={formRef}
                 onSubmit={handleSubmit}
                 className="space-y-5"
                 noValidate
@@ -542,4 +518,4 @@ export default function ContactSection() {
       </div>
     </section>
   );
-}
+} 
